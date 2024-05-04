@@ -5,7 +5,6 @@ from openai import OpenAI
 EMBEDDINGS_LENGTH = 1536
 
 class IrisDB:
-
     def __init__(
             self, 
             username: str = 'demo',
@@ -43,7 +42,9 @@ class IrisDB:
         assert 'image_path' in df.columns, "image_path column is missing"
         assert 'description' in df.columns, "description column is missing"
 
-        df['description_vector'] = df['description'].apply(self.get_embedding)
+        if 'description_vector' not in df.columns:
+            df['description_vector'] = df['description'].apply(self.get_embedding)
+        
         with self.engine.connect() as conn:
             with conn.begin():
                 for index, row in df.iterrows():
@@ -58,8 +59,8 @@ class IrisDB:
                         'description_vector': str(row['description_vector'])
                     })
 
-    def description_search(self, txt: str, top_n: int, name: str = 'gallery_images'):
-        embedding = self.get_embedding(txt)
+    def description_search(self, query: str, top_n: int, name: str = 'gallery_images'):
+        embedding = self.get_embedding(query)
         with self.engine.connect() as conn:
             with conn.begin():
                 sql = text(f"""
@@ -69,3 +70,20 @@ class IrisDB:
 
                 results = conn.execute(sql, {'search_vector': str(embedding)}).fetchall()
         return results
+
+
+if __name__ == '__main__':
+    OPENAI_API_KEY = open('OPENAI_API_KEY.txt').read().strip()
+    iris = IrisDB(OPENAI_API_KEY=OPENAI_API_KEY)
+
+    df = pd.DataFrame({
+        'image_path': ['image1.jpg', 'image2.jpg', 'image3.jpg'],
+        'description': ['a cat', 'a dog', 'a car']
+    })
+
+    iris.init_table()
+    iris.insert_df_to_table(df)
+
+    description_search = "likes fish and is very cute"
+    results = iris.description_search(description_search, top_n=3)
+    print([t[1] for t in results])

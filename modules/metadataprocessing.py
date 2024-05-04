@@ -24,13 +24,12 @@ def conv(coord_str):
     return coord
 
 
-
 def city_state_country(img):
     
     geolocator = Nominatim(user_agent="gonchuuu")
 
-    lat = img['lat']
-    long = img['long']
+    lat = img['Latitude']
+    long = img['Longitude']
     if lat is not None and long is not None:
         lat = str(conv(lat))
         long = str(conv(long))
@@ -41,9 +40,33 @@ def city_state_country(img):
 
     else:
         return None, None
+    
+
+def get_season(img):
+
+    if img["Time"] is not None:
+        month = img["Time"].month 
+        if 3 <= month <= 5:
+            return "Spring"
+        elif 6 <= month <= 8:
+            return "Summer"
+        elif 9 <= month <= 11:
+            return "Autum"
+        else:
+            return "Winter"
+    else:
+        return None 
+
+        
+def derivate_metadata(df):
+    # Now we get the season
+    df["Season"] = df.apply(get_season, axis=1)
+    # First data derivation relative to location
+    df[["City", "Country"]] = df.apply(city_state_country, axis=1).to_list()
+    return df        
 
 
-def extract_metadata(data_path):
+def extract_metadata(data_path, df):
     
     metadata_dict = {}
     for img in os.listdir(data_path):
@@ -68,71 +91,27 @@ def extract_metadata(data_path):
                         lat = child.text          
                     elif child.tag.endswith("GPSLongitude"):
                         long = child.text
-                metadata_dict[img_path] = {"time": time, "lat": lat, "long": long}
+                df = df._append({"Image": img, "Time": time, "Latitude": lat, 
+                                "Longitude": long}, ignore_index=True)
+
+
             else:
-                # Si no se encuentra el valor XMP, se asignan None a los metadatos
-                metadata_dict[img_path] = {"time": None, "lat": None, "long": None}
-
-
-    return metadata_dict
-
-
-def save_metadata_to_csv(metadata_dict, fname):
-    with open(fname, 'w', newline='') as csvfile:
-        fieldnames = ['Image', 'Time', 'Latitude', 'Longitude', 'Season', 'City', 'Country']
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        writer.writeheader()
-        for img, data in metadata_dict.items():
-            writer.writerow({'Image': img,
-                             'Time': data['time'],
-                             'Latitude': data['lat'],
-                             'Longitude': data['long'], 
-                             'Season': data['season'], 
-                             'City': data['city'],
-                             'Country': data['country']})
-
-
-def get_season(img):
-
-    if img["time"] is not None:
-        month = img["time"].month 
-        if 3 <= month <= 5:
-            return "Spring"
-        elif 6 <= month <= 8:
-            return "Summer"
-        elif 9 <= month <= 11:
-            return "Autum"
-        else:
-            return "Winter"
-    else:
-        return None 
-
-        
-def derivate_metadata(metadata_dict):
-    
-    for img in metadata_dict:
-        # First data derivation relative to location
-        city, country = city_state_country(metadata_dict[img])
-        # Now we get the season
-        season = get_season(metadata_dict[img])
-
-        metadata_dict[img]["city"] = city
-        metadata_dict[img]["country"] = country
-        metadata_dict[img]["season"] = season
-    
-
+                df = df._append({"Image": img, "Time": None, "Latitude": None, 
+                                "Longitude": None}, ignore_index=True)
+    return df    
 
 
 def generate_metadata(data_path, fname):
 
-    metadata_dict = extract_metadata(data_path)
-    derivate_metadata(metadata_dict)
-    save_metadata_to_csv(metadata_dict, fname)
+    df = pd.DataFrame(columns=["Image", "Time", "Latitude", "Longitude"])
+    df = extract_metadata(data_path, df)
+    df = derivate_metadata(df)
+    df.to_csv(fname, index=False)
 
 
 def main():
 
-    fname = "metadata1.csv"
+    fname = "metadata.csv"
     data_path = "/Users/gonzalomf_12/Documents/HackUPC/Hackupc24_inter/Data/PngRealSet"
     ini = time.time()
     generate_metadata(data_path, fname)

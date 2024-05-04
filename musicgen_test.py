@@ -1,6 +1,6 @@
 from gradio_client import Client, file
 
-client = Client("https://fe5b142938cf1e9296.gradio.live/")
+client = Client("https://bd4d529137a742d156.gradio.live/")
 result = client.predict(
 		model="facebook/musicgen-medium",
         model_path = "",

@@ -9,6 +9,8 @@ import os
 import getpass
 import pandas as pd
 
+openai_client = ""
+
 @st.cache_resource
 def initial_setup():
     if not os.environ.get("OPENAI_API_KEY"): 

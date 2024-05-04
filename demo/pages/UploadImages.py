@@ -8,6 +8,8 @@ from PIL import Image
 import sys
 sys.path.insert(1, 'utils')
 
+from openai import OpenAI
+
 from image_adder import add_images
 
 if not os.environ.get("OPENAI_API_KEY"): 

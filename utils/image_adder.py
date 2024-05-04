@@ -7,7 +7,7 @@ import pandas as pd
 from openai import OpenAI
 
 def add_images(openai_client : OpenAI, folderpath : str, csvpath : str = 'Data/version2.csv'):
-    DB = IrisDB(Openai_client = openai_client)
+    DB = IrisDB(openai_client = openai_client)
     if not DB.table_exists():
             df = pd.read_csv(csvpath)
             df.columns = ['image_path', 'description']

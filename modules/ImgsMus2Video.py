@@ -32,16 +32,16 @@ def make_video_experimental(image_names : list[str], audio_name : str, duration 
     command = "ffmpeg"
     for image in image_names:
         command += f" -loop 1 -t {time_per_image} -i {image}  "
-    command += f" -i {audio_name} -filter_complex '"
+    command += f" -i {audio_name} -filter_complex \""
     for i in range(n):
         if i == 0:
-            command += f"[{i}:v]scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2,setsar=1,fade=t=out:st={fade_out}:d={fade_duration}[v{i}]; "
+            command += f"[{i}:v]scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2,setsar=1,fade=t=out:st={fade_out}:d={fade_duration}[v{i}];"
         else:
-            command += f"[{i}:v]scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2,setsar=1,fade=t=in:st=0:d={fade_duration},fade=t=out:st={fade_out}:d={fade_duration}[v{i}]; "
+            command += f"[{i}:v]scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2,setsar=1,fade=t=in:st=0:d={fade_duration},fade=t=out:st={fade_out}:d={fade_duration}[v{i}];"
     for i in range(n):
         command += f"[v{i}]"
         
-    command += f"concat=n={n}:v=1:a=0,format=yuv420p[v]' -map '[v]' -map {n}:a -shortest {video_path}"
+    command += f"concat=n={n}:v=1:a=0,format=yuv420p[v]\" -map \"[v]\" -map {n}:a -shortest {video_path}"
     
     os.system(command)
     

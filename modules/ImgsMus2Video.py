@@ -2,7 +2,7 @@ import ffmpeg
 import os
 
 
-def make_video(image_names, audio_name, duration = 20, video_name = 'SampleData/output.mp4'):
+def make_video(image_names : list[str], audio_name : str, duration : int = 20 , video_name : str = 'SampleData/output.mp4' ):
     """
     Given a list of image names, an audio file, and a duration, creates a video with the images and audio.
     Each image will be displayed for the same amount of time (duration / number of images).
@@ -17,7 +17,6 @@ def make_video(image_names, audio_name, duration = 20, video_name = 'SampleData/
     audio = ffmpeg.input(audio_name, t = duration)
 
     ffmpeg.output(video, audio, video_name).run()
-
 
     os.remove('in.txt')
     

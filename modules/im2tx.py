@@ -45,7 +45,7 @@ def obtain_df_with_text(data_path) -> pd.DataFrame:
 def main():
     
     fname = "newset.csv"
-    data_path = "/Data/PngRealSet"
+    data_path = "./Data/PngRealSet"
     ini = time.time()
     df = obtain_df_with_text(data_path)
     df.to_csv(fname, mode="w", header=False)

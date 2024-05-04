@@ -32,7 +32,12 @@ def generate_song(song_prompt : str,
       api_name=api_name
     )
     
+    print(result)
+    
     return AudioFileClip(result[1])
+
+if __name__ == '__main__':
+  generate_song("A song about the ocean", model="facebook/musicgen-small", melody=None, duration=10, topk=250, topp=0, temperature=1, cfg_coef=3, api_name="/predict_full")
 
 
 

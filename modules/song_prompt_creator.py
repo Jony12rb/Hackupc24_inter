@@ -22,7 +22,7 @@ def create_song_prompt(query, image_descriptions, openai_client):
         ]
     )
     
-    return ans
+    return ans.choices[0].message.content
     
 if __name__ == '__main__':
     if not os.environ.get("OPENAI_API_KEY"): 

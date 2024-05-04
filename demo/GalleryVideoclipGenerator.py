@@ -7,12 +7,23 @@ from iris_db import IrisDB
 from openai import OpenAI
 import os
 import getpass
+import pandas as pd
 
-if not os.environ.get("OPENAI_API_KEY"): 
-    os.environ["OPENAI_API_KEY"] = getpass.getpass("OpenAI API Key:")
+@st.cache_resource
+def initial_setup():
+    if not os.environ.get("OPENAI_API_KEY"): 
+        os.environ["OPENAI_API_KEY"] = getpass.getpass("OpenAI API Key:")
 
-openai_client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
-DB = IrisDB(Openai_client = openai_client)
+    openai_client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+    DB = IrisDB(Openai_client = openai_client)
+    if not DB.table_exists():
+            df = pd.read_csv('Data/version2.csv')
+            df.columns = ['image_path', 'description']
+
+            DB.init_table()
+            DB.insert_df_to_table(df)
+
+initial_setup()
 
 st.title("Personal Gallery videoclip generator")
 
@@ -24,7 +35,7 @@ video_path = st.text_input("Video path", 'SampleData/output.mp4')
 if st.button("Generate videoclip"):
     if query:
         videoclip = generate_videoclip(openai_client=openai_client, DB=DB, 
-                                       query=query, duration=duration, video_path=video_path, amount_images=amount_images)
+                                       query=query, duration=duration, video_path=video_path, amount_images=min(amount_images,duration))
         st.video(video_path)
     else: 
         st.video("https://www.youtube.com/watch?v=dQw4w9WgXcQ")

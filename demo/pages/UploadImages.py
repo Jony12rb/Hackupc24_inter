@@ -10,6 +10,11 @@ sys.path.insert(1, 'utils')
 
 from image_adder import add_images
 
+if not os.environ.get("OPENAI_API_KEY"): 
+    os.environ["OPENAI_API_KEY"] = getpass.getpass("OpenAI API Key:")
+
+openai_client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+
 st.title("Image uploader")
 
 uploaded_images=st.file_uploader("Upload your images. Only png files are supported.", type=['png'], accept_multiple_files=True)
@@ -26,7 +31,7 @@ if uploaded_images:
             pilimg = Image.open(img)
             pilimg.save(imgpath, format='PNG')
             pilimg.close()
-        add_images(newpath)
+        add_images(openai_client, newpath)
 
         
         add_images(uploaded_images)

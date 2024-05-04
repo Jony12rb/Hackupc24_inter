@@ -6,18 +6,27 @@ def create_song_prompt(query, image_descriptions, openai_client):
     """
     Creates a song prompt from a query and image descriptions.
     """
-    prompt = f"Say the key words for the  genres and instruments of a song based on the query '{query}' and the following image descriptions:\n"
+    prompt = f"Say the keywords for the  genres and instruments of a song based on the query '{query}' and the following image descriptions:\n"
     for image_description in image_descriptions:
         prompt += f"Image Description: {image_description}\n"
     ans = openai_client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": """
-                   Say the genre and characteristics of a song based on the query 'Happy' and the following image descriptions:
+                   Say the keywords for the  genres and instruments of a song based on the query 'Happy' and the following image descriptions:
                    A beautiful sunset over the ocean
                    A sailboat on the water
                    A beach with palm trees
+                   Ice cream on a cone on a hot day
                    """},
                 {"role": "system", "content": "Relaxing, calm, peacefull, Guitar, piano, Slow tempo"},
+                {"role": "user", "content": """
+                   Say the keywords for the  genres and instruments of a song based on the query 'winter trip' and the following image descriptions:
+                   A snowy mountain peak
+                   A cozy cabin in the woods
+                   Four friends skiing down a slope
+                   Snowman with a carrot nose
+                   """},
+                {"role": "system", "content": "Comfy, chill, Christmas, bell, flute, carol"},
                 {"role": "user", "content": prompt},
         ]
     )

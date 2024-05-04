@@ -41,7 +41,7 @@ def make_video_experimental(image_names : list[str], audio_name : str, duration 
     for i in range(n):
         command += f"[v{i}]"
         
-    command += f"concat=n={n}:v=1:a=0,format=yuv420p[v]\" -map \"y[v]\"y -map {n}:a -shortest {video_path}"
+    command += f"concat=n={n}:v=1:a=0,format=yuv420p[v]\" -map \"[v]\" -map {n}:a -shortest {video_path}"
     
     os.system(command)
     

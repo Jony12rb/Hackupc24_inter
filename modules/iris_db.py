@@ -69,7 +69,7 @@ class IrisDB:
                 """)
 
                 results = conn.execute(sql, {'search_vector': str(embedding)}).fetchall()
-        return results
+        return pd.DataFrame(results)
 
 
 if __name__ == '__main__':
@@ -86,4 +86,4 @@ if __name__ == '__main__':
 
     description_search = "likes fish and is very cute"
     results = iris.description_search(description_search, top_n=3)
-    print([t[1] for t in results])
+    print(results)

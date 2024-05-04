@@ -57,8 +57,8 @@ def image2text(data_path: str, fname: str) -> None:
 
 def main():
     
-    fname = "version4.csv"
-    data_path = "/Users/gonzalomf_12/Documents/HackUPC/Hackupc24_inter/PngRealSet"
+    fname = "newset.csv"
+    data_path = "/Users/gonzalomf_12/Documents/HackUPC/Hackupc24_inter/Data/PngRealSet"
     ini = time.time()
     image2text(data_path, fname)
     fin = time.time()

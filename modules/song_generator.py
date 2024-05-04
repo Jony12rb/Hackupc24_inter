@@ -2,7 +2,7 @@ from gradio_client import Client
 from moviepy.editor import AudioFileClip
 
 def generate_song(song_prompt : str,
-               client : str="https://ef36d175ec3fbcac18.gradio.live/",
+               client : str="https://99b6f868731deec2c0.gradio.live/",
                model : str="facebook/musicgen-medium",
                model_path : str ="",
                decoder : str="Default",

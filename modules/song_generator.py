@@ -1,8 +1,7 @@
 from gradio_client import Client
-from moviepy.editor import AudioFileClip
 
 def generate_song(song_prompt : str,
-               client : str="https://037656551b8c81169f.gradio.live/",
+               client : str="https://347770e37084a2c7e3.gradio.live/",
                model : str="facebook/musicgen-small",
                model_path : str ="",
                decoder : str="Default",
@@ -32,12 +31,20 @@ def generate_song(song_prompt : str,
       api_name=api_name
     )
     
-    print(result)
     
-    return AudioFileClip(result[1])
+    return result[1]
 
 if __name__ == '__main__':
-  generate_song("A song about the ocean", model="facebook/musicgen-small", melody=None, duration=10, topk=250, topp=0, temperature=1, cfg_coef=3, api_name="/predict_full")
+  generate_song("A song about the ocean",
+                client="https://347770e37084a2c7e3.gradio.live/",
+                model="facebook/musicgen-small",
+                melody=None,
+                duration=10,
+                topk=250,
+                topp=0,
+                temperature=1,
+                cfg_coef=3,
+                api_name="/predict_full")
 
 
 

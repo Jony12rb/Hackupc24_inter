@@ -2,7 +2,7 @@ import os, pandas as pd
 from sqlalchemy import create_engine, text
 from openai import OpenAI
 
-EMBEDDINGS_LENGTH = 1536
+EMBEDDINGS_DIM = 1536
 
 class IrisDB:
     def __init__(
@@ -12,16 +12,16 @@ class IrisDB:
             hostname: str = os.getenv('IRIS_HOSTNAME', 'localhost'),
             port: str = '1972',
             namespace: str = 'USER',
-            OPENAI_API_KEY: str = os.getenv('OPENAI_API_KEY')
+            Openai_client: OpenAI = None,
         ):
         self._CONNECTION_STRING = f"iris://{username}:{password}@{hostname}:{port}/{namespace}"
         self.engine = create_engine(self._CONNECTION_STRING)
         
-        self.client = OpenAI(api_key=OPENAI_API_KEY)
+        self.client = Openai_client
 
     def get_embedding(self, txt, model="text-embedding-3-small"):
         txt = txt.replace("\n", " ")
-        return self.client.embeddings.create(input = [txt], model=model).data[0].embedding
+        return self.client.embeddings.create(input = [txt], model=model, dimensions=EMBEDDINGS_DIM).data[0].embedding
         
     def init_table(self, name: str = 'gallery_images'):
         with self.engine.connect() as conn:
@@ -33,7 +33,7 @@ class IrisDB:
                         CREATE TABLE {name} (
                         path VARCHAR(255),
                         description VARCHAR(2000),
-                        description_vector VECTOR(DOUBLE, {EMBEDDINGS_LENGTH})
+                        description_vector VECTOR(DOUBLE, {EMBEDDINGS_DIM})
                 )
                         """
                 result = conn.execute(text(sql))
@@ -74,7 +74,7 @@ class IrisDB:
 
 if __name__ == '__main__':
     OPENAI_API_KEY = open('OPENAI_API_KEY.txt').read().strip()
-    iris = IrisDB(OPENAI_API_KEY=OPENAI_API_KEY)
+    iris = IrisDB(Openai_client = OpenAI(api_key=OPENAI_API_KEY))
 
     df = pd.DataFrame({
         'image_path': ['image1.jpg', 'image2.jpg', 'image3.jpg'],

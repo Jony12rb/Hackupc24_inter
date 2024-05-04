@@ -16,7 +16,7 @@ def make_video(image_names : list[str], audio_name : str, duration : int = 20 , 
     video = ffmpeg.input("in.txt", f = "concat")
     audio = ffmpeg.input(audio_name, t = duration)
 
-    ffmpeg.output(video, audio, video_path).run()
+    ffmpeg.output(video, audio, video_path, vf = "scale=w=640:h=640:force_original_aspect_ratio=1,pad=640:640:(ow-iw)/2:(oh-ih)/2").run()
 
     os.remove('in.txt')
     

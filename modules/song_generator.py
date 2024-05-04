@@ -3,7 +3,7 @@ from moviepy.editor import AudioFileClip
 
 def generate_song(song_prompt : str,
                client : str="https://99b6f868731deec2c0.gradio.live/",
-               model : str="facebook/musicgen-medium",
+               model : str="facebook/musicgen-small",
                model_path : str ="",
                decoder : str="Default",
                melody : str=None,

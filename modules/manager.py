@@ -1,11 +1,11 @@
 from iris_db import IrisDB
 from song_prompt_creator import create_song_prompt
 from song_generator import generate_song
-from ImgsMus2Video import make_video
+from ImgsMus2Video import make_video_experimental
 from openai import OpenAI
 import pandas as pd
 
-GRADIO_CLIENT = "https://05af30f78f5cf150b7.gradio.live/"
+GRADIO_CLIENT = "https://b3bc3fe277546f9ccd.gradio.live"
 
 def generate_videoclip(openai_client : OpenAI, DB: IrisDB, 
                        query: str, duration : int = 20, video_path : str = 'SampleData/output.mp4', amount_images : int = 10):
@@ -15,7 +15,7 @@ def generate_videoclip(openai_client : OpenAI, DB: IrisDB,
     song_prompt = create_song_prompt(query, image_descriptions, openai_client)
     song = generate_song(song_prompt, duration=duration, client=GRADIO_CLIENT)
     print(song)
-    make_video(image_paths, song, duration, video_path)
+    make_video_experimental(image_paths, song, duration)
 
 
 if __name__ == '__main__':
@@ -30,4 +30,4 @@ if __name__ == '__main__':
         DB.insert_df_to_table(df)
 
     query = 'a cool chair'
-    generate_videoclip(Openai_client, DB, query, duration=20, video_path='SampleData/output.mp4', amount_images=10)
+    generate_videoclip(Openai_client, DB, query, duration=20, video_path='SampleData/output.mp4', amount_images=5)

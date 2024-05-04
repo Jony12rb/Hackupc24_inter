@@ -17,7 +17,7 @@ def generate_song(song_prompt,
     Convert text to music using the musicgen model.
     """
     
-    client = Client("https://bd4d529137a742d156.gradio.live/")
+    client = Client(client)
     result = client.predict(
 		model=model,
         model_path = model_path,

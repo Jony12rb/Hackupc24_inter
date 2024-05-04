@@ -1,18 +1,18 @@
 from gradio_client import Client
 from moviepy.editor import AudioFileClip
 
-def generate_song(song_prompt,
-               client="https://bd4d529137a742d156.gradio.live/",
-               model="facebook/musicgen-medium",
-               model_path="",
-               decoder="Default",
-               melody=None,
-               duration=10,
-               topk=250,
-               topp=0,
-               temperature=1,
-               cfg_coef=3,
-               api_name="/predict_full"):
+def generate_song(song_prompt : str,
+               client : str="https://bd4d529137a742d156.gradio.live/",
+               model : str="facebook/musicgen-medium",
+               model_path : str ="",
+               decoder : str="Default",
+               melody : str=None,
+               duration : int=10,
+               topk : int=250,
+               topp : int=0,
+               temperature : int=1,
+               cfg_coef : int=3,
+               api_name : str="/predict_full"):
     """
     Convert text to music using the musicgen model.
     """

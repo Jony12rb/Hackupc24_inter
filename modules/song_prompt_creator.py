@@ -17,8 +17,8 @@ def create_song_prompt(query, image_descriptions, openai_client):
                    A sailboat on the water
                    A beach with palm trees
                    """},
-            {"role": "system", "content": "Relaxing, calm, peacefull, Guitar and piano, Slow tempo"},
-            {"role": "user", "content": prompt},
+                {"role": "system", "content": "Relaxing, calm, peacefull, Guitar, piano, Slow tempo"},
+                {"role": "user", "content": prompt},
         ]
     )
     

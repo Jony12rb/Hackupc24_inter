@@ -19,17 +19,17 @@ def generate_song(song_prompt : str,
     
     client = Client(client)
     result = client.predict(
-		model=model,
-        model_path = model_path,
-		decoder=decoder,
-		text=song_prompt,
-		melody=melody,
-		duration=duration,
-		topk=topk,
-		topp=topp,
-		temperature=temperature,
-		cfg_coef=cfg_coef,
-		api_name=api_name
+      model=model,
+      model_path = model_path,
+      decoder=decoder,
+      text=song_prompt,
+      melody=melody,
+      duration=duration,
+      topk=topk,
+      topp=topp,
+      temperature=temperature,
+      cfg_coef=cfg_coef,
+      api_name=api_name
     )
     
     return AudioFileClip(result[1])

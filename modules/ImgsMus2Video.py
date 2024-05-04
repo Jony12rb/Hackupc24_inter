@@ -22,8 +22,8 @@ def make_video(image_names : list[str], audio_name : str, duration : int = 20 , 
     
     
 if __name__ == '__main__':
-    images = ["PngDataSet/IMG_4383.png", "PngDataSet/IMG_3723.png"]
-    audio = "audio.mp3"
+    images = ["PngDataSet/IMG_4383.png", "PngDataSet/IMG_3723.png", "PngDataSet/IMG_3767.png"]
+    audio = "SampleData/audio.mp3"
     t = 5
     make_video(images, audio, t)
     

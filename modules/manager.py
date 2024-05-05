@@ -8,7 +8,7 @@ import pandas as pd
 GRADIO_CLIENT = "https://5c3c66d4aa962d8f21.gradio.live"
 
 def generate_videoclip(openai_client : OpenAI, DB: IrisDB, 
-                       query: str, duration : int = 20, video_path : str = 'SampleData/output.mp4', amount_images : int = 10):
+                       query: str, duration : int = 20, video_path : str = 'Data/ExampleData/test.mp4', amount_images : int = 10):
     db_output_df  = DB.description_search(query=query, top_n=amount_images)
     image_paths = db_output_df['path'].tolist()
     image_descriptions = db_output_df['description'].tolist()

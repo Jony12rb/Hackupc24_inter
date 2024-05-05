@@ -1,7 +1,7 @@
 from gradio_client import Client
 
 def generate_song(song_prompt : str,
-               client : str="https://347770e37084a2c7e3.gradio.live/",
+               client : str="https://5c3c66d4aa962d8f21.gradio.live",
                model : str="facebook/musicgen-small",
                model_path : str ="",
                decoder : str="Default",

@@ -10,7 +10,7 @@ import getpass
 import pandas as pd
 
 if not os.environ.get("OPENAI_API_KEY"): 
-    os.environ["OPENAI_API_KEY"] = getpass.getpass("OpenAI API Key:")
+    os.environ["OPENAI_API_KEY"] = open('OPENAI_API_KEY.txt').read().strip()
 
 openai_client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 DB = IrisDB(Openai_client = openai_client)
@@ -27,7 +27,7 @@ st.title("Personal Gallery videoclip generator")
 query = st.text_input("Put here your prompt")
 amount_images = st.slider("Amount of images", 1, 30, 10)
 duration = st.slider("Duration (seconds)", 5, 60, 20)
-video_path = st.text_input("Video path", 'SampleData/output.mp4')
+video_path = st.text_input("Video path", 'Data/ExampleData/test.mp4')
 
 if st.button("Generate videoclip"):
     if query:

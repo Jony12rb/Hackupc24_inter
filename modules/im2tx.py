@@ -31,7 +31,7 @@ def obtain_df_with_text(data_path, verbose=False) -> pd.DataFrame:
     for img in tqdm(os.listdir(data_path), disable=not verbose):
 
         if img.endswith(".png"):
-            img_path = os.path.join(data_path, img)
+            img_path = os.path.join(data_path, img).replace("\\", "/")
             raw_image = Image.open(img_path).convert('RGB')
             # Add .to("cuda") to run in GPU
             inputs = processor(raw_image, seed1, return_tensors="pt")

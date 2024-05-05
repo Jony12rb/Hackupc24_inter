@@ -4,16 +4,17 @@ import glob
 import os
 from datetime import datetime
 from PIL import Image
+import getpass
 
 import sys
-sys.path.insert(1, 'utils')
+sys.path.insert(2, 'utils')
 
 from openai import OpenAI
 
 from image_adder import add_images
 
 if not os.environ.get("OPENAI_API_KEY"): 
-    os.environ["OPENAI_API_KEY"] = getpass.getpass("OpenAI API Key:")
+    os.environ["OPENAI_API_KEY"] = open('OPENAI_API_KEY.txt').read().strip()
 
 openai_client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 
@@ -25,7 +26,7 @@ if uploaded_images:
         for img in uploaded_images:
             st.image(img)
     else: 
-        newpath = f"Data/UploadedData/{datetime.today().strftime('%Y_%m_%d_%H_%M_%S')}"
+        newpath = f"./Data/UploadedData/{datetime.today().strftime('%Y_%m_%d_%H_%M_%S')}"
         if not os.path.exists(newpath):
             os.makedirs(newpath)
         for img in uploaded_images:
@@ -34,9 +35,6 @@ if uploaded_images:
             pilimg.save(imgpath, format='PNG')
             pilimg.close()
         add_images(openai_client, newpath)
-
-        
-        add_images(uploaded_images)
     
         
     

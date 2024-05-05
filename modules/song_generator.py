@@ -37,8 +37,8 @@ def generate_song(song_prompt : str,
     return result[1]
   
 def generate_song_replicated(song_prompt : str,
-                             audio_path : str,
-                             duration : int=10,
+                             audio_path : str = "Data/ExampleData/input.mp3",
+                             duration : int=2,
                              model_version : str="large",
                              top_k : int=250,
                              top_p : int=0,
@@ -70,20 +70,13 @@ def generate_song_replicated(song_prompt : str,
   )
 
   mp3file = urllib3.request("GET", output)
-  with open(audio_path,'wb') as out:
-    out.write(mp3file.data)
+  # Save the audio file. Erase the file if it already exists.
+  with open(audio_path, 'wb') as f:
+    f.write(mp3file.data)
+    
+  return audio_path
 
 if __name__ == '__main__':
-  generate_song("A song about the ocean",
-                client="https://347770e37084a2c7e3.gradio.live/",
-                model="facebook/musicgen-small",
-                melody=None,
-                duration=10,
-                topk=250,
-                topp=0,
-                temperature=1,
-                cfg_coef=3,
-                api_name="/predict_full")
-
+  generate_song_replicated("A song about the ocean")
 
 

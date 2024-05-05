@@ -36,7 +36,7 @@ def create_song_prompt(query : str, image_descriptions : list[str], openai_clien
 if __name__ == '__main__':
     if not os.environ.get("OPENAI_API_KEY"): 
         os.environ["OPENAI_API_KEY"] = getpass.getpass("OpenAI API Key:")
-    openai_client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+    openai_client = OpenAI()
     query = "Sadness"
     image_descriptions = ["Long winter nights", "A lonely person", "A rainy day"]
     print(create_song_prompt(query, image_descriptions, openai_client))

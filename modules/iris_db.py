@@ -118,21 +118,15 @@ class IrisDB:
 
 
 if __name__ == '__main__':
-    OPENAI_API_KEY = open('OPENAI_API_KEY.txt').read().strip()
-    iris = IrisDB(Openai_client = OpenAI(api_key=OPENAI_API_KEY))
+    iris = IrisDB(Openai_client = OpenAI())
 
-    if not iris.table_exists():
-        # df = pd.DataFrame({
-        #     'image_path': ['image1.jpg', 'image2.jpg', 'image3.jpg'],
-        #     'description': ['a cat', 'a dog', 'a car']
-        # })
-        df = pd.read_csv('Data/version2.csv')
-        df.columns = ['image_path', 'description']
+    df = pd.read_csv('Data/version2.csv')
+    df.columns = ['image_path', 'description']
 
-        iris.init_table()
-        iris.insert_df_to_table(df)
+    iris.init_table()
+    iris.insert_df_to_table(df)
 
-    description_search = "music"
+    description_search = "beard"
     results = iris.description_search(description_search, top_n=3)
     # limit prints of pd.DataFrame to 240 characters
     pd.set_option('display.max_colwidth', 240)

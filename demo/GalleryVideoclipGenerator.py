@@ -9,23 +9,18 @@ import os
 import getpass
 import pandas as pd
 
-openai_client = ""
+if not os.environ.get("OPENAI_API_KEY"): 
+    os.environ["OPENAI_API_KEY"] = getpass.getpass("OpenAI API Key:")
 
-@st.cache_resource
-def initial_setup():
-    if not os.environ.get("OPENAI_API_KEY"): 
-        os.environ["OPENAI_API_KEY"] = getpass.getpass("OpenAI API Key:")
+openai_client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+DB = IrisDB(Openai_client = openai_client)
+if not DB.table_exists():
+    df = pd.read_csv('Data/version2.csv')
+    df.columns = ['image_path', 'description']
 
-    openai_client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
-    DB = IrisDB(Openai_client = openai_client)
-    if not DB.table_exists():
-            df = pd.read_csv('Data/version2.csv')
-            df.columns = ['image_path', 'description']
+    DB.init_table()
+    DB.insert_df_to_table(df)
 
-            DB.init_table()
-            DB.insert_df_to_table(df)
-
-initial_setup()
 
 st.title("Personal Gallery videoclip generator")
 

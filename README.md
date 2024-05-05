@@ -18,35 +18,35 @@ Moreover, we offer the functionality of selecting the photos and music using nat
 After cloning the repo, stand on the main folder and do the following:
 
 1. Install IRIS Community Edtion in a container:
-    ```Shell
-    docker run -d --name iris-comm -p 1972:1972 -p 52773:52773 -e IRIS_PASSWORD=demo -e IRIS_USERNAME=demo intersystemsdc/iris-community:latest
-    ```
-    :information_source: After running the above command, you can access the System Management Portal via http://localhost:52773/csp/sys/UtilHome.csp. Please note you may need to [configure your web server separately](https://docs.intersystems.com/iris20241/csp/docbook/DocBook.UI.Page.cls?KEY=GCGI_private_web#GCGI_pws_auto) when using another product edition.
+```Shell
+docker run -d --name iris-comm -p 1972:1972 -p 52773:52773 -e IRIS_PASSWORD=demo -e IRIS_USERNAME=demo intersystemsdc/iris-community:latest
+```
+:information_source: After running the above command, you can access the System Management Portal via http://localhost:52773/csp/sys/UtilHome.csp. Please note you may need to [configure your web server separately](https://docs.intersystems.com/iris20241/csp/docbook/DocBook.UI.Page.cls?KEY=GCGI_private_web#GCGI_pws_auto) when using another product edition.
 
 2. Create a Python environment with conda and activate it:
-    ```Shell
-    conda create --name iris-vector-search python=3.10
-    conda activate iris-vector-search
-    ```
+```Shell
+conda create --name iris-vector-search python=3.10
+conda activate iris-vector-search
+```
 
 3. Install packages:
-    ```Shell
-    pip install -r requirements.txt
-    conda install -c conda-forge ffmpeg
-    ```
+```Shell
+pip install -r requirements.txt
+conda install -c conda-forge ffmpeg
+```
 
 4. Put your OpenAI API and Replicate API key
 
 Create a .env file in the main folder and write the following:
-    ```Shell
-    OPENAI_API_KEY=your_openai_api_key
-    REPLICATE_API_KEY=your_replicate_api_key
-    ```
+```Shell
+OPENAI_API_KEY=your_openai_api_key
+REPLICATE_API_KEY=your_replicate_api_key
+```
 
 5. Activate the streamlit demo
-    ```Shell
-    streamlit run ./demo/GalleryVideoclipGenerator.py
-    ```
+```Shell
+streamlit run ./demo/GalleryVideoclipGenerator.py
+```
 
 6. Now, you can generate your videoclips with the webUI! 
 You have a page for uploading your images and one for generating the clips with them.

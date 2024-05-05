@@ -31,8 +31,8 @@ After cloning the repo, stand on the main folder and do the following:
     conda install -c conda-forge ffmpeg
     ```
 
-4. Put your OpenAI API key
-Write your OpenAI API key in the OPENAI_API_KEY.txt file
+4. Put your OpenAI API and Replicate API key
+Write your OpenAI API key in the OPENAI_API_KEY.txt file and your Replicate API key in the replicate_api.txt
 
 5. Activate the streamlit demo
     ```Shell

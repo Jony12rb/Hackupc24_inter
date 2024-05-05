@@ -4,11 +4,15 @@ from song_generator import generate_song_replicated
 from ImgsMus2Video import make_video_experimental
 from openai import OpenAI
 import pandas as pd
+import os
 
 GRADIO_CLIENT = "https://5c3c66d4aa962d8f21.gradio.live"
 
 def generate_videoclip(openai_client : OpenAI, DB: IrisDB, 
-                       query: str, duration : int = 20, video_path : str = 'Data/ExampleData/test.mp4', amount_images : int = 10):
+                       query: str, duration : int = 20, video_path : str = 'SampleData/output.mp4', amount_images : int = 10):
+    if not os.environ.get("REPLICATE_API_TOKEN"):
+        os.environ["REPLICATE_API_TOKEN"] = open('replicate_api.txt').read().strip()
+    
     db_output_df  = DB.description_search(query=query, top_n=amount_images)
     image_paths = db_output_df['path'].tolist()
     image_descriptions = db_output_df['description'].tolist()
@@ -29,5 +33,5 @@ if __name__ == '__main__':
         DB.init_table()
         DB.insert_df_to_table(df)
 
-    query = 'river'
-    generate_videoclip(Openai_client, DB, query, duration=20, video_path='Data/ExampleData/output3.mp4', amount_images=5)
+    query = 'Cool chairs'
+    generate_videoclip(Openai_client, DB, query, duration=10, video_path='Data/ExampleData/output4.mp4', amount_images=6)

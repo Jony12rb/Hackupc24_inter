@@ -20,7 +20,7 @@ After cloning the repo, stand on the main folder and do the following:
 2. Create a Python environment with conda and activate it:
     ```Shell
     conda create --name iris-vector-search python=3.10
-    conda activate
+    conda activate iris-vector-search
     ```
 
 3. Install packages:
@@ -29,10 +29,13 @@ After cloning the repo, stand on the main folder and do the following:
     conda install -c conda-forge ffmpeg
     ```
 
-4. Activate the streamlit demo
+4. Put your OpenAI API key
+Write your OpenAI API key in the OPENAI_API_KEY.txt file
+
+5. Activate the streamlit demo
     ```Shell
     streamlit run ./demo/GalleryVideoclipGenerator.py
     ```
 
-5. Now, you can generate your videoclips with the webUI! 
+6. Now, you can generate your videoclips with the webUI! 
 You have a page for uploading your images and one for generating the clips with them.

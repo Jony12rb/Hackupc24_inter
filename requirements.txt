@@ -14,3 +14,5 @@ setuptools
 gradio_client
 moviepy
 ffmpeg-python
+replicate
+urllib3>=2.0.0a1

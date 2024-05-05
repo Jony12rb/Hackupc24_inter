@@ -22,6 +22,7 @@ def generate_videoclip(
     
     db_output_df  = DB.description_search(query=query, top_n=amount_images)
     image_paths = db_output_df['path'].tolist()
+    image_paths = [path for path in image_paths if os.path.exists(path)]
     image_descriptions = db_output_df['description'].tolist()
     song_prompt = create_song_prompt(query, image_descriptions, openai_client)
     #song = generate_song(song_prompt, duration=duration, model="facebook/musicgen-medium")

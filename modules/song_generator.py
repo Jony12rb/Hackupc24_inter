@@ -1,4 +1,6 @@
 from gradio_client import Client
+import urllib3
+import replicate
 
 def generate_song(song_prompt : str,
                client : str="https://347770e37084a2c7e3.gradio.live/",
@@ -33,6 +35,43 @@ def generate_song(song_prompt : str,
     
     
     return result[1]
+  
+def generate_song_replicated(song_prompt : str,
+                             audio_path : str,
+                             duration : int=10,
+                             model_version : str="large",
+                             top_k : int=250,
+                             top_p : int=0,
+                             temperature : int=1,
+                             continuation : bool=False,
+                             continuation_start : int=0,
+                             output_format : str="mp3",
+                             multi_band_diffusion : bool=False,
+                             normalization_strategy : str="peak",
+                             classifier_free_guidance : int=3,
+                             ):
+
+  output = replicate.run(
+      "meta/musicgen:671ac645ce5e552cc63a54a2bbff63fcf798043055d2dac5fc9e36a837eedcfb",
+      input={
+          "top_k": top_k,
+          "top_p": top_p,
+          "prompt": song_prompt,
+          "duration": duration,
+          "temperature": temperature,
+          "continuation": continuation,
+          "model_version": model_version,
+          "output_format": output_format,
+          "continuation_start": continuation_start,
+          "multi_band_diffusion": multi_band_diffusion,
+          "normalization_strategy": normalization_strategy,
+          "classifier_free_guidance": classifier_free_guidance
+      }
+  )
+
+  mp3file = urllib3.request("GET", output)
+  with open(audio_path,'wb') as out:
+    out.write(mp3file.data)
 
 if __name__ == '__main__':
   generate_song("A song about the ocean",

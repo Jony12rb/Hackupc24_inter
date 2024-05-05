@@ -1,7 +1,10 @@
 from PIL import Image
 from PIL.ExifTags import TAGS
 
-def get_metadata_dict(imagepath):
+def get_metadata_dict(imagepath) -> dict:
+    """
+    Given an image path, returns a dictionary with the metadata of the image.
+    """
     # read the image data using PIL
     exifdata = Image.open(imagepath).getexif()
     metadata_dict = {}

@@ -2,10 +2,14 @@ import os, pandas as pd
 from sqlalchemy import create_engine, text
 from openai import OpenAI
 
-EMBEDDINGS_DIM = 1536
-
 
 class IrisDB:
+    """
+    Class to interact with an InterSystems IRIS database.
+    """
+
+    EMBEDDINGS_DIM = 1536
+
     def __init__(
             self, 
             username: str = 'demo',
@@ -20,14 +24,23 @@ class IrisDB:
         
         self.client = Openai_client
 
-    def get_embedding(self, txt : str, model : str="text-embedding-3-small"):
+    def get_embedding(self, txt : str, model : str="text-embedding-3-small") -> list[float]:
+        """
+        Given a text, returns the embeddings of the text.
+        """
         txt = txt.replace("\n", " ")
-        return self.client.embeddings.create(input = [txt], model=model, dimensions=EMBEDDINGS_DIM).data[0].embedding
+        return self.client.embeddings.create(input = [txt], model=model, dimensions=self.EMBEDDINGS_DIM).data[0].embedding
     
-    def get_batch_embedding(self, texts : list[str], model : str="text-embedding-3-small"):
+    def get_batch_embedding(self, texts : list[str], model : str="text-embedding-3-small") -> list[list[float]]:
+        """
+        Given a list of texts, returns the embeddings of the texts.
+        """
         return [e.embedding for e in self.client.embeddings.create(input = texts, model=model).data]
 
-    def table_exists(self, name: str = 'gallery_images'):
+    def table_exists(self, name: str = 'gallery_images') -> bool:
+        """
+        Check if a table with the given name exists in the database.
+        """
         with self.engine.connect() as conn:
             with conn.begin():
                 sql = f"""SELECT * FROM {name}"""
@@ -37,7 +50,12 @@ class IrisDB:
                 except Exception as e:
                     return False
 
-    def init_table(self, name: str = 'gallery_images'):
+    def init_table(self, name: str = 'gallery_images') -> None:
+        """
+        Initialize a table with the given name in the database.
+        Drops the table if it already exists.
+        """
+
         with self.engine.connect() as conn:
             with conn.begin():
                 sql = f"""DROP TABLE IF EXISTS {name}"""
@@ -47,14 +65,23 @@ class IrisDB:
                         CREATE TABLE {name} (
                         path VARCHAR(255),
                         description VARCHAR(2000),
-                        description_vector VECTOR(DOUBLE, {EMBEDDINGS_DIM})
+                        description_vector VECTOR(DOUBLE, {self.EMBEDDINGS_DIM})
                 )
                         """
                 result = conn.execute(text(sql))
     
-    def insert_df_to_table(self, df: pd.DataFrame, name: str = 'gallery_images'):
-        assert 'image_path' in df.columns, "image_path column is missing"
-        assert 'description' in df.columns, "description column is missing"
+    def insert_df_to_table(self, df: pd.DataFrame, name: str = 'gallery_images') -> None:
+        """
+        Insert a DataFrame into the table with the given name.
+        The DataFrame must have the following columns: 'image_path', 'description'.
+        If the DataFrame has a 'description_vector' column, it will be used as the description vector.
+        Otherwise, the description vector will be obtained using the OpenAI API.
+        """
+
+        if 'image_path' not in df.columns:
+            raise ValueError("image_path column is missing")
+        if 'description' not in df.columns:
+            raise ValueError("description column is missing")
 
         if 'description_vector' not in df.columns:
             df['description_vector'] = self.get_batch_embedding(df['description'].tolist())
@@ -73,7 +100,11 @@ class IrisDB:
                         'description_vector': str(row['description_vector'])
                     })
 
-    def description_search(self, query: str, top_n: int, name: str = 'gallery_images'):
+    def description_search(self, query: str, top_n: int, name: str = 'gallery_images') -> pd.DataFrame:
+        """
+        Given a query, returns the top_n most similar rows in the table with the given name.
+        """
+        
         embedding = self.get_embedding(query)
         with self.engine.connect() as conn:
             with conn.begin():

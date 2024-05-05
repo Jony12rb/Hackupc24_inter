@@ -43,8 +43,7 @@ def obtain_df_with_text(data_path : str, verbose : bool=False ) -> pd.DataFrame:
             
     return imtx
 
-def main():
-    
+if __name__=="__main__":
     fname = "newset.csv"
     data_path = "./Data/PngRealSet"
     ini = time.time()
@@ -53,6 +52,3 @@ def main():
     fin = time.time()
     extime = fin - ini
     print("Time:", extime, "s")
-
-if __name__=="__main__":
-    main()

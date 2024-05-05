@@ -1,4 +1,4 @@
-# gitignore __pycache__ and .pyc files
-
 __pycache__/
 *.pyc
+OPENAI_API_KEY.txt
+replicate_api.txt

@@ -6,7 +6,10 @@ from iris_db import IrisDB
 import pandas as pd
 from openai import OpenAI
 
-def add_images(openai_client : OpenAI, folderpath : str, csvpath : str = 'Data/version2.csv'):
+def add_images(openai_client : OpenAI, folderpath : str, csvpath : str = 'Data/version2.csv') -> None:
+    """
+    Add images to the database.
+    """
     DB = IrisDB(Openai_client = openai_client)
     if not DB.table_exists():
             df = pd.read_csv(csvpath)

@@ -6,10 +6,17 @@ from openai import OpenAI
 import pandas as pd
 import os
 
-GRADIO_CLIENT = "https://5c3c66d4aa962d8f21.gradio.live"
-
-def generate_videoclip(openai_client : OpenAI, DB: IrisDB, 
-                       query: str, duration : int = 20, video_path : str = 'SampleData/output.mp4', amount_images : int = 10):
+def generate_videoclip(
+        openai_client : OpenAI,
+        DB: IrisDB,
+        query: str,
+        duration : int = 20,
+        video_path : str = 'SampleData/output.mp4',
+        amount_images : int = 10
+    ):
+    """
+    Given a query, generates a video clip with images and a song.
+    """
     if not os.environ.get("REPLICATE_API_TOKEN"):
         os.environ["REPLICATE_API_TOKEN"] = open('replicate_api.txt').read().strip()
     
@@ -17,7 +24,7 @@ def generate_videoclip(openai_client : OpenAI, DB: IrisDB,
     image_paths = db_output_df['path'].tolist()
     image_descriptions = db_output_df['description'].tolist()
     song_prompt = create_song_prompt(query, image_descriptions, openai_client)
-    #song = generate_song(song_prompt, duration=duration, client=GRADIO_CLIENT, model="facebook/musicgen-medium")
+    #song = generate_song(song_prompt, duration=duration, model="facebook/musicgen-medium")
     song = generate_song_replicated(song_prompt, duration=duration)
     make_video_experimental(image_paths, song, duration, video_path)
 

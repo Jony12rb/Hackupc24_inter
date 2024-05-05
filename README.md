@@ -1,6 +1,10 @@
 # Hackupc24_inter
 
-![Video](Data/ExampleData/CoolChairs.mp4)
+
+
+https://github.com/Jony12rb/Hackupc24_inter/assets/99959182/cfde0de4-f683-4a11-bebf-c219fd4ef7b1
+
+
 
 ## Description
 The following photo shows the schema of the project. Our model is a text-to-video project, although we do not use a generative video model. Instead, we use the user's photos together with ai music generation to create a video. The user can upload photos, and the model will generate a video with the photos and music. The music is generated using the ai model, and the video is created using the photo and the music. The user can download the video and share it with friends. 

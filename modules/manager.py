@@ -13,9 +13,8 @@ def generate_videoclip(openai_client : OpenAI, DB: IrisDB,
     image_paths = db_output_df['path'].tolist()
     image_descriptions = db_output_df['description'].tolist()
     song_prompt = create_song_prompt(query, image_descriptions, openai_client)
-    song = generate_song(song_prompt, duration=duration, client=GRADIO_CLIENT)
-    print(song)
-    make_video_experimental(image_paths, song, duration)
+    song = generate_song(song_prompt, duration=duration, client=GRADIO_CLIENT, model="facebook/musicgen-medium")
+    make_video_experimental(image_paths, song, duration, video_path)
 
 
 if __name__ == '__main__':
@@ -29,5 +28,5 @@ if __name__ == '__main__':
         DB.init_table()
         DB.insert_df_to_table(df)
 
-    query = 'sunset in the city'
-    generate_videoclip(Openai_client, DB, query, duration=20, video_path='SampleData/output.mp4', amount_images=5)
+    query = 'river'
+    generate_videoclip(Openai_client, DB, query, duration=20, video_path='Data/ExampleData/output3.mp4', amount_images=5)

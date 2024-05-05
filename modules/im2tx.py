@@ -39,7 +39,7 @@ def obtain_df_with_text(data_path, verbose=False) -> pd.DataFrame:
             capt = processor.decode(out[0], skip_special_tokens=True)
             imtx.loc[len(imtx.index)] = [img_path, capt]
             
-    return imtx 
+    return imtx
 
 def main():
     

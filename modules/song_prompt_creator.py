@@ -2,7 +2,7 @@ from openai import OpenAI
 import os
 import getpass
 
-def create_song_prompt(query, image_descriptions, openai_client):
+def create_song_prompt(query : str, image_descriptions : list[str], openai_client : OpenAI) -> str | None:
     """
     Creates a song prompt from a query and image descriptions.
     """

@@ -17,8 +17,10 @@ def suppress_warnings(func):
 
 
 @suppress_warnings
-def obtain_df_with_text(data_path, verbose=False) -> pd.DataFrame:
-    
+def obtain_df_with_text(data_path : str, verbose : bool=False ) -> pd.DataFrame:
+    """
+    Given a path to a folder with images, returns a DataFrame with the images and their descriptions.
+    """
     warnings.simplefilter(action='ignore', category=FutureWarning)
     processor = Bp.from_pretrained("Salesforce/blip-image-captioning-large")
     # Add .to("cuda") to run in GPU

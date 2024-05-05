@@ -37,7 +37,11 @@ After cloning the repo, stand on the main folder and do the following:
 
 4. Put your OpenAI API and Replicate API key
 
-Write your OpenAI API key in the OPENAI_API_KEY.txt file and your Replicate API key in the replicate_api.txt
+Create a .env file in the main folder and write the following:
+```Shell
+OPENAI_API_KEY=your_openai_api_key
+REPLICATE_API_KEY=your_replicate_api_key
+```
 
 5. Activate the streamlit demo
     ```Shell

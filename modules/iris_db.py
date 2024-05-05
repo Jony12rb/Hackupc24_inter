@@ -20,11 +20,11 @@ class IrisDB:
         
         self.client = Openai_client
 
-    def get_embedding(self, txt, model="text-embedding-3-small"):
+    def get_embedding(self, txt : str, model : str="text-embedding-3-small"):
         txt = txt.replace("\n", " ")
         return self.client.embeddings.create(input = [txt], model=model, dimensions=EMBEDDINGS_DIM).data[0].embedding
     
-    def get_batch_embedding(self, texts, model="text-embedding-3-small"):
+    def get_batch_embedding(self, texts : list[str], model : str="text-embedding-3-small"):
         return [e.embedding for e in self.client.embeddings.create(input = texts, model=model).data]
 
     def table_exists(self, name: str = 'gallery_images'):

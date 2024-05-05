@@ -1,12 +1,11 @@
 import os
-import csv
 import warnings
-import requests
 import time
 import pandas as pd
 from PIL import Image
 from transformers import BlipProcessor as Bp
 from transformers import BlipForConditionalGeneration as BConGen
+from tqdm import tqdm
 
 
 def suppress_warnings(func):
@@ -18,7 +17,7 @@ def suppress_warnings(func):
 
 
 @suppress_warnings
-def obtain_df_with_text(data_path) -> pd.DataFrame:
+def obtain_df_with_text(data_path, verbose=False) -> pd.DataFrame:
     
     warnings.simplefilter(action='ignore', category=FutureWarning)
     processor = Bp.from_pretrained("Salesforce/blip-image-captioning-large")
@@ -29,7 +28,7 @@ def obtain_df_with_text(data_path) -> pd.DataFrame:
     # We store here the images and their descriptions
     imtx = pd.DataFrame(columns = ["Filename", "Description"])
     
-    for img in os.listdir(data_path):
+    for img in tqdm(os.listdir(data_path), disable=not verbose):
 
         if img.endswith(".png"):
             img_path = os.path.join(data_path, img)
@@ -47,8 +46,8 @@ def main():
     fname = "newset.csv"
     data_path = "./Data/PngRealSet"
     ini = time.time()
-    df = obtain_df_with_text(data_path)
-    df.to_csv(fname, mode="w", header=False)
+    df = obtain_df_with_text(data_path, verbose=True)
+    df.to_csv(fname, mode="w", header=False, index=False)
     fin = time.time()
     extime = fin - ini
     print("Time:", extime, "s")

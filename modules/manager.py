@@ -5,7 +5,7 @@ from ImgsMus2Video import make_video_experimental
 from openai import OpenAI
 import pandas as pd
 
-GRADIO_CLIENT = "https://b3bc3fe277546f9ccd.gradio.live"
+GRADIO_CLIENT = "https://5c3c66d4aa962d8f21.gradio.live"
 
 def generate_videoclip(openai_client : OpenAI, DB: IrisDB, 
                        query: str, duration : int = 20, video_path : str = 'SampleData/output.mp4', amount_images : int = 10):
@@ -29,5 +29,5 @@ if __name__ == '__main__':
         DB.init_table()
         DB.insert_df_to_table(df)
 
-    query = 'a cool chair'
+    query = 'sunset in the city'
     generate_videoclip(Openai_client, DB, query, duration=20, video_path='SampleData/output.mp4', amount_images=5)
